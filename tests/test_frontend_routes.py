@@ -80,7 +80,7 @@ def test_display_brand_preserves_landing_headline():
     c = client()
     for path in ('/', '/workspace/', '/classic/'):
         html = c.get(path).text
-        assert '与疗 Agent' in html
+        assert 'Medical Agent' in html
         assert '你的医疗信息助手' in html
         assert not re.search(r'agent\s*forge', html, re.IGNORECASE)
     landing = c.get('/').text

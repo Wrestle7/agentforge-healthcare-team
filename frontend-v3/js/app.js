@@ -82,7 +82,7 @@ function renderViews() {
   $('capabilities-view').hidden = state.view !== 'capabilities';
   $('patients-view').hidden = state.view !== 'patients';
   $('view-title').textContent = viewLabels[state.view];
-  document.title = `${viewLabels[state.view]} · 与疗 Agent`;
+  document.title = `${viewLabels[state.view]} · Medical Agent`;
   document.querySelectorAll('.main-nav [data-view]').forEach(node => {
     const active = node.dataset.view === state.view;
     node.classList.toggle('active', active);
@@ -146,7 +146,7 @@ function appendMessage(message) {
   } else {
     article.setAttribute('aria-label', '助手回答');
     const label = el('div', 'assistant-label');
-    label.innerHTML = '<img src="/assets/mark-landing.svg" alt=""><span>与疗 Agent</span><span class="assistant-reference">辅助参考</span>';
+    label.innerHTML = '<img src="/assets/mark-landing.svg" alt=""><span>Medical Agent</span><span class="assistant-reference">辅助参考</span>';
     message.phaseNode = el('span'); label.append(message.phaseNode);
     message.toolsNode = el('div', 'message-process'); message.contentNode = el('div', 'markdown');
     message.statusNode = el('p', 'status-text', message.phase === 'running' ? '正在处理问题…' : '');

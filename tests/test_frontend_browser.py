@@ -218,7 +218,7 @@ def test_landing_layout_entry_and_back(page, server, width):
     page.goto(server[0] + '/')
     playwright.expect(page.locator('#landing-title')).to_be_visible()
     page.reload()
-    assert page.title() == '与疗 Agent · 你的医疗信息助手'
+    assert page.title() == 'Medical Agent · 你的医疗信息助手'
     assert page.locator('.landing-brand').inner_text() == 'Medical Agent\n你的医疗信息助手'
     assert page.locator('.landing-brand').get_attribute('aria-label') == 'Medical Agent 项目首页'
     assert page.locator('#landing-title').inner_text() == '让复杂的医疗信息，\n从一个问题开始。'
@@ -251,8 +251,8 @@ def test_landing_layout_entry_and_back(page, server, width):
     assert page.locator('.brand img').get_attribute('src') == '/assets/mark-landing.svg'
     if width == 390:
         page.locator('#menu-button').click()  # Branding is in the mobile drawer.
-    assert page.title() == '医疗助手 · 与疗 Agent'
-    assert page.locator('.brand').inner_text() == '与疗 Agent\n你的医疗信息助手'
+    assert page.title() == '医疗助手 · Medical Agent'
+    assert page.locator('.brand').inner_text() == 'Medical Agent\n你的医疗信息助手'
     if width == 390:
         page.screenshot(path=str(ARTIFACTS / 'workspace-brand-mobile.png'))
         page.keyboard.press('Escape')
@@ -611,7 +611,7 @@ def test_workspace_palette_matches_landing(page, server, theme, width):
     page.screenshot(path=str(ARTIFACTS / f'workspace-{theme}-home-{width}.png'))
     send(page)
     assert page.locator('.assistant-label img').get_attribute('src') == '/assets/mark-landing.svg'
-    assert '与疗 Agent' in page.locator('.assistant-label').inner_text()
+    assert 'Medical Agent' in page.locator('.assistant-label').inner_text()
     assert 'AgentForge' not in page.locator('.assistant-label').inner_text()
     page.locator('.tool-trace > summary').click()
     page.screenshot(path=str(ARTIFACTS / f'workspace-{theme}-chat-{width}.png'))
