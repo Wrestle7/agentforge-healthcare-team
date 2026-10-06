@@ -9,7 +9,6 @@ from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from fastapi.staticfiles import StaticFiles
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -22,6 +21,7 @@ setup_logging()
 logger = logging.getLogger(__name__)
 
 from app.api.routes import health_router, router  # noqa: E402
+from app.api.patients import router as patients_router  # noqa: E402
 from app.config import settings  # noqa: E402
 from app.database import init_db  # noqa: E402
 from app.fhir_client import fhir_client  # noqa: E402
@@ -63,15 +63,21 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
             "x-forwarded-for", request.client.host if request.client else "unknown"
         )
 
+        # Patient IDs need not become a new source of identifying access logs.
+        log_path = str(request.url.path)
+        if log_path.startswith('/api/patients/'):
+            route = request.scope.get('route')
+            log_path = getattr(route, 'path', '/api/patients/{redacted}')
+
         logger.info(
             "%s %s %d %.1fms",
             request.method,
-            request.url.path,
+            log_path,
             response.status_code,
             latency_ms,
             extra={
                 "method": request.method,
-                "path": str(request.url.path),
+                "path": log_path,
                 "status_code": response.status_code,
                 "latency_ms": round(latency_ms, 1),
                 "client_ip": client_ip,
@@ -141,7 +147,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=_allowed_origins,
     allow_credentials=True,
-    allow_methods=["GET", "POST", "DELETE"],
+    allow_methods=["GET", "POST", "PATCH", "DELETE"],
     allow_headers=["X-API-Key", "Content-Type"],
 )
 
@@ -151,8 +157,9 @@ app.add_middleware(RequestLoggingMiddleware)
 # Mount routers
 app.include_router(health_router, prefix="/api")  # Unauthenticated health checks
 app.include_router(router, prefix="/api")          # Authenticated endpoints
+app.include_router(patients_router, prefix="/api")  # Deterministic read-only patient views
 
-# Mount new frontend as static files (must be last — catches all non-API routes)
-_frontend_v2_dir = Path(__file__).resolve().parent.parent / "frontend-v2"
-if _frontend_v2_dir.is_dir():
-    app.mount("/", StaticFiles(directory=str(_frontend_v2_dir), html=True), name="frontend")
+# Keep static mounts after API routers; expose the untouched classic UI separately.
+from app.frontend import mount_frontends
+
+mount_frontends(app, Path(__file__).resolve().parent.parent)

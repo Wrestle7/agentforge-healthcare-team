@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="与疗 Agent — 你的医疗信息助手。连接患者记录、用药与检验信息，在同一工作台完成查询与整理。AI 辅助参考，不替代专业判断。">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <title>与疗 Agent · 你的医疗信息助手</title>
+  <link rel="icon" href="/assets/mark-landing.svg" type="image/svg+xml">
+  <script src="/js/theme.js?v=20261005-boot2"></script>
+  <link rel="stylesheet" href="/css/theme.css?v=20261005-boot2">
+  <link rel="stylesheet" href="/css/landing.css?v=20261005-boot2">
+  <script defer src="/js/landing.js?v=20261005-boot2"></script>
+  <script type="module" src="/js/landing-entry.js?v=20261005-boot2"></script>
+</head>
+<body data-theme="a">
+  <div class="landing-atmosphere" aria-hidden="true">
+    <div class="landing-scene">
+      <span class="landing-aurora aurora-blue"></span><span class="landing-aurora aurora-violet"></span>
+      <span class="scene-grid"></span><span class="scene-stars"></span>
+      <svg class="scene-ribbons" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" fill="none">
+        <defs>
+          <linearGradient id="ribbon-blue" x1="0" y1="650" x2="1600" y2="120" gradientUnits="userSpaceOnUse"><stop stop-color="#45b8ee" stop-opacity="0"/><stop offset=".22" stop-color="#56b4ff"/><stop offset=".52" stop-color="#6479f5"/><stop offset=".8" stop-color="#b89afc"/><stop offset="1" stop-color="#b89afc" stop-opacity="0"/></linearGradient>
+          <linearGradient id="ribbon-violet" x1="100" y1="850" x2="1600" y2="350" gradientUnits="userSpaceOnUse"><stop stop-color="#638cf6" stop-opacity="0"/><stop offset=".38" stop-color="#7a9ef7"/><stop offset=".72" stop-color="#aa87ed"/><stop offset="1" stop-color="#bda5ed" stop-opacity="0"/></linearGradient>
+          <path id="ribbon-path-blue" d="M-220 660C260 860 70 160 510 230S1040 300 1820-120"/>
+          <path id="ribbon-path-violet" d="M-100 980C210 570 660 850 1150 420S1550 440 1770 290"/>
+        </defs>
+        <g stroke="url(#ribbon-blue)"><use href="#ribbon-path-blue" class="ribbon-halo"/><use href="#ribbon-path-blue" class="ribbon-core"/><use href="#ribbon-path-blue" class="ribbon-signal"/></g>
+        <g stroke="url(#ribbon-violet)"><use href="#ribbon-path-violet" class="ribbon-halo"/><use href="#ribbon-path-violet" class="ribbon-core"/><use href="#ribbon-path-violet" class="ribbon-signal ribbon-signal-second"/></g>
+      </svg>
+      <svg class="scene-orbits" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" fill="none">
+        <ellipse class="orbit-track" cx="800" cy="475" rx="725" ry="280" transform="rotate(-17 800 475)"/>
+        <ellipse class="orbit-beam" cx="800" cy="475" rx="725" ry="280" transform="rotate(-17 800 475)"/>
+        <ellipse class="orbit-track orbit-inner" cx="800" cy="475" rx="600" ry="225" transform="rotate(17 800 475)"/>
+        <ellipse class="orbit-beam orbit-beam-second" cx="800" cy="475" rx="600" ry="225" transform="rotate(17 800 475)"/>
+      </svg>
+      <span class="scene-pointer-glow"></span>
+    </div>
+    <!-- Decorative molecular sketches, not reference structures for a named drug. -->
+    <div class="molecular-field">
+      <svg class="molecular-definitions" width="0" height="0" focusable="false">
+        <defs>
+          <linearGradient id="helix-strand" x1="30" y1="0" x2="130" y2="320" gradientUnits="userSpaceOnUse"><stop stop-color="var(--molecule-blue)"/><stop offset=".5" stop-color="var(--molecule-violet)"/><stop offset="1" stop-color="var(--molecule-blue)"/></linearGradient>
+          <symbol id="molecular-dna" viewBox="0 0 160 320">
+            <g class="dna-rungs">
+              <path d="M50 20H110M40 40H120M50 60H110M50 100H110M40 120H120M50 140H110M50 180H110M40 200H120M50 220H110M50 260H110M40 280H120M50 300H110"/>
+              <path class="dna-rung-accent" d="M80 20H110M40 40H80M80 60H110M50 100H80M80 120H120M50 140H80M80 180H110M40 200H80M80 220H110M50 260H80M80 280H120M50 300H80"/>
+            </g>
+            <path class="dna-backbone dna-backbone-back" d="M80 0C133 27 133 53 80 80S27 133 80 160S133 213 80 240S27 293 80 320"/>
+            <path class="dna-backbone" d="M80 0C27 27 27 53 80 80S133 133 80 160S27 213 80 240S133 293 80 320"/>
+            <g class="molecule-nodes"><circle cx="40" cy="40" r="3"/><circle cx="120" cy="120" r="3"/><circle cx="40" cy="200" r="3"/><circle cx="120" cy="280" r="3"/></g>
+            <g class="molecule-nodes molecule-nodes-accent"><circle cx="120" cy="40" r="3"/><circle cx="40" cy="120" r="3"/><circle cx="120" cy="200" r="3"/><circle cx="40" cy="280" r="3"/></g>
+          </symbol>
+          <symbol id="molecular-rings" viewBox="0 0 240 210">
+            <g class="molecule-bonds">
+              <path d="M52 67L88 46L124 67V109L88 130L52 109ZM124 67L160 46L196 67V109L160 130L124 109M59 72L88 55M116 73V104M60 105L88 121M160 55L189 72M189 104L160 121M52 109L25 125M88 46V19M196 109L220 123M160 130V166L132 182"/>
+              <path class="molecule-bond-accent" d="M94 46V19M167 130V166"/>
+            </g>
+            <g class="molecule-atoms"><text x="91" y="14">O</text><text x="18" y="136">HO</text><text x="229" y="134">N</text><text x="164" y="181">O</text></g>
+            <g class="molecule-nodes"><circle cx="52" cy="67" r="3"/><circle cx="124" cy="109" r="3.2"/><circle cx="196" cy="67" r="3"/></g>
+            <circle class="molecule-node-halo" cx="124" cy="109" r="11"/>
+          </symbol>
+          <symbol id="molecular-chain" viewBox="0 0 260 180">
+            <g class="molecule-bonds">
+              <path d="M36 80L69 61L102 80V118L69 137L36 118ZM43 85L69 70M95 85V113M43 114L69 128M102 80L134 61L167 80L199 61L228 78M199 61V31M206 61V31M134 61V35M69 137V160M36 80L13 67"/>
+              <path class="molecule-bond-accent" d="M167 80V112L194 128"/>
+            </g>
+            <g class="molecule-atoms"><text x="203" y="25">O</text><text x="134" y="29">N</text><text x="241" y="88">OH</text><text x="167" y="126">O</text></g>
+            <g class="molecule-nodes"><circle cx="69" cy="61" r="3"/><circle cx="102" cy="118" r="3"/><circle cx="167" cy="80" r="3.2"/></g>
+            <circle class="molecule-node-halo" cx="167" cy="80" r="11"/>
+          </symbol>
+        </defs>
+      </svg>
+      <span class="molecular-motif motif-dna-left"><svg class="molecular-float" viewBox="0 0 160 320" focusable="false"><use href="#molecular-dna"/></svg></span>
+      <span class="molecular-motif motif-rings"><svg class="molecular-float" viewBox="0 0 240 210" focusable="false"><use href="#molecular-rings"/></svg></span>
+      <span class="molecular-motif motif-chain"><svg class="molecular-float" viewBox="0 0 260 180" focusable="false"><use href="#molecular-chain"/></svg></span>
+      <span class="molecular-motif motif-dna-right"><svg class="molecular-float" viewBox="0 0 160 320" focusable="false"><use href="#molecular-dna"/></svg></span>
+    </div>
+  </div>
+  <a class="landing-skip" href="#ask-entry">跳到工作台入口</a>
+  <div class="landing-page">
+    <header class="landing-header">
+      <a class="landing-brand" href="/" aria-label="Medical Agent 项目首页">
+        <img src="/assets/mark-landing.svg" alt="" width="34" height="34">
+        <span>Medical Agent<small>你的医疗信息助手</small></span>
+      </a>
+      <nav class="landing-nav" aria-label="项目导航">
+        <div id="visual-switch" class="visual-switch" role="group" aria-label="首页视觉风格" hidden>
+          <button type="button" data-theme-choice="a" aria-pressed="true"><span class="theme-dot theme-dot-light" aria-hidden="true"></span>A · 浅色</button>
+          <button type="button" data-theme-choice="b" aria-pressed="false"><span class="theme-dot theme-dot-dark" aria-hidden="true"></span>B · 深色</button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="landing-main" id="overview">
+      <section class="landing-hero" aria-labelledby="landing-title">
+        <p class="landing-intro">你的医疗信息助手</p>
+        <h1 id="landing-title">让复杂的医疗信息，<br>从一个问题开始。</h1>
+        <p class="landing-description">连接患者记录、用药与检验信息，<br class="landing-mobile-break">在同一工作台完成查询与整理。<br>把更多注意力，留给需要你判断的事。</p>
+
+        <div class="landing-entry" id="landing-composer" hidden>
+          <div class="landing-entry-surface">
+            <div class="entry-tabs" role="tablist" aria-label="选择开始方式">
+              <button id="ask-tab" type="button" role="tab" aria-selected="true" aria-controls="landing-question-panel">直接提问</button>
+              <button id="patients-tab" type="button" role="tab" aria-selected="false" aria-controls="landing-patient-panel" tabindex="-1">患者工作台</button>
+            </div>
+            <form id="landing-question-panel" role="tabpanel" aria-labelledby="ask-tab">
+              <label class="landing-sr-only" for="landing-question">输入你的问题</label>
+              <textarea id="landing-question" class="landing-placeholder" maxlength="10000" rows="2" placeholder="问点什么，从了解开始。" aria-describedby="entry-note" autocomplete="off"></textarea>
+              <div class="landing-entry-bottom">
+                <span class="landing-entry-mode">新问题，新会话<span id="landing-question-count">0 / 10,000</span></span>
+                <button id="landing-send" class="landing-entry-arrow" type="submit" aria-label="发送并进入工作台" disabled><svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5m-6 6 6-6 6 6"/></svg></button>
+              </div>
+            </form>
+            <div id="landing-patient-panel" role="tabpanel" aria-labelledby="patients-tab" hidden>
+              <p class="entry-patient-title">先找到患者，再查看资料。</p>
+              <p class="entry-patient-copy">按姓名或 ID 查找，查看现有病历、用药与检验记录。只读浏览，不触发 AI 分析。</p>
+              <a class="entry-patient-link" href="/workspace/#patients-overview">查找患者<span aria-hidden="true">→</span></a>
+            </div>
+            <p id="entry-error" class="entry-error" role="alert" hidden></p>
+          </div>
+        </div>
+        <p id="entry-note" class="landing-entry-note">仅提供完成任务所需的信息 · <a id="ask-entry" href="/workspace/#message-input">进入工作台，继续已有会话<span aria-hidden="true"> ↗</span></a></p>
+        <noscript><p class="landing-entry-note">请启用 JavaScript 后使用提问与患者查询；上方链接仍可进入工作台。</p></noscript>
+
+        <section class="landing-capabilities" aria-label="可以协助的工作">
+          <a class="landing-capability" href="/workspace/#patients-overview">
+            <svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>
+            <div><h2>患者概览</h2><p>选择患者，查看基础资料</p></div>
+          </a>
+          <a class="landing-capability" href="/workspace/#patients-medications">
+            <svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 15 6-6M5.2 18.8a5.7 5.7 0 0 1 0-8.1l5.5-5.5a5.7 5.7 0 0 1 8.1 8.1l-5.5 5.5a5.7 5.7 0 0 1-8.1 0Z"/><path d="m8 8 8 8"/></svg>
+            <div><h2>用药与过敏</h2><p>核对已有用药与过敏记录</p></div>
+          </a>
+          <a class="landing-capability" href="/workspace/#patients-labs">
+            <svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v16h16M7 14l4-5 4 3 5-6"/></svg>
+            <div><h2>检验记录</h2><p>查看检验值与参考范围</p></div>
+          </a>
+          <a class="landing-capability" href="/workspace/#patients-history">
+            <svg viewBox="0 0 24 24" width="21" height="21" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v4m8-4v4M4 10h16M6 5h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/><path d="m9 15 2 2 4-4"/></svg>
+            <div><h2>病史记录</h2><p>浏览已记录病情与就诊</p></div>
+          </a>
+        </section>
+        
+      </section>
+    </main>
+
+    <footer class="landing-footer">
+      <div class="landing-footer-meta"><span class="landing-footer-label">基于 OpenEMR 与 LangGraph 构建</span><a class="landing-classic" href="/classic/">经典版</a><button id="motion-toggle" class="landing-motion-toggle" type="button" hidden>暂停动效</button></div>
+      <p><strong>AI 辅助参考</strong><span class="landing-footer-divider" aria-hidden="true"></span>请核对原始记录，不作为诊断或处方。</p>
+    </footer>
+  </div>
+  <p id="landing-status" class="landing-sr-only" role="status" aria-live="polite"></p>
+</body>
+</html>

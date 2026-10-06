@@ -1,11 +1,11 @@
 """FastAPI routes for the AgentForge Healthcare API."""
 
 import logging
-from typing import Optional
+from typing import Annotated, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 from langchain_core.messages import HumanMessage, ToolMessage
-from pydantic import BaseModel
+from pydantic import BaseModel, StringConstraints
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 
@@ -20,9 +20,11 @@ from app.database import (
     get_conversation_metadata,
     list_conversations,
     load_messages,
+    rename_conversation,
 )
 from app.fhir_client import fhir_client
 from app.observability import get_metrics, record_feedback
+from app.response_details import get_response_details
 
 logger = logging.getLogger(__name__)
 
@@ -194,6 +196,31 @@ class ConversationHistory(BaseModel):
     messages: list[dict]
 
 
+class RenameConversationRequest(BaseModel):
+    """A non-empty, single-line, plain-text title; leading/trailing spaces removed."""
+
+    title: Annotated[str, StringConstraints(
+        strict=True, strip_whitespace=True, min_length=1, max_length=100,
+        pattern=r"^[^\x00-\x1f\x7f]+$",
+    )]
+
+
+@router.patch("/conversations/{conversation_id}", response_model=ConversationSummary)
+@limiter.limit("30/minute")
+async def rename_conversation_endpoint(
+    request: Request, conversation_id: str, payload: RenameConversationRequest,
+):
+    """Persist a new title using the same authentication as other history APIs."""
+    result = rename_conversation(conversation_id, payload.title)
+    if result is None:
+        raise HTTPException(status_code=404, detail="Conversation not found")
+    logger.info(
+        "Conversation renamed",
+        extra={"operation": "conversation_rename", "conversation_id": conversation_id},
+    )
+    return result
+
+
 @router.get("/conversations", response_model=list[ConversationSummary])
 @limiter.limit("30/minute")
 async def get_conversations(request: Request):
@@ -219,7 +246,11 @@ async def get_conversation(request: Request, conversation_id: str):
         if isinstance(msg, ToolMessage):
             continue
         role = "user" if isinstance(msg, HumanMessage) else "assistant"
-        frontend_messages.append({"role": role, "content": msg.content})
+        entry = {"role": role, "content": msg.content}
+        details = get_response_details(msg)
+        if details is not None:
+            entry["metadata"] = details
+        frontend_messages.append(entry)
 
     return {
         "id": conversation_id,

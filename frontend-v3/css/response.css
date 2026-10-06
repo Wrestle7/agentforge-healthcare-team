@@ -1,0 +1,108 @@
+/* Answer presentation only; colors follow the unchanged shared A/B palette. */
+.startup-actions{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 4px}
+.messages{max-width:896px;padding:32px 40px 16px}
+.message{margin-bottom:34px}
+.message.assistant{padding-bottom:24px;border-bottom:1px solid var(--ui-subtle-border)}
+.message.assistant:last-child{border-bottom:0;margin-bottom:0}
+.assistant-label{gap:9px;margin-bottom:18px;flex-wrap:wrap}
+.assistant-label img{width:26px;height:26px}
+.assistant-label .assistant-reference{color:var(--ui-muted);font-size:10px;font-weight:400}
+.response-state,.assistant-label .response-state{display:inline-flex;align-items:center;gap:6px;padding:3px 8px;border:1px solid var(--ui-border);border-radius:20px;font-size:10px;font-weight:400;line-height:1.5;color:var(--ui-muted);background:var(--ui-surface);white-space:nowrap}
+.assistant-label .response-state{margin-left:auto}
+.response-state::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--ui-icon)}
+.response-state.is-running{color:var(--ui-accent);background:var(--ui-primary-soft)}
+.response-state.is-error{color:var(--ui-danger);border-color:var(--ui-error-border);background:var(--ui-error-bg)}
+.response-state.is-error::before{background:var(--ui-danger)}
+.message .markdown{font-size:15px;line-height:1.95}
+.message .markdown p{margin:14px 0}
+.message .markdown>*:first-child{margin-top:0}
+.message .markdown>*:last-child{margin-bottom:0}
+.message .markdown h1{font-size:23px}
+.message .markdown h2{font-size:20px}
+.message .markdown h3,.message .markdown h4{font-size:17px}
+.message .markdown h1,.message .markdown h2,.message .markdown h3,.message .markdown h4{margin-top:28px;letter-spacing:-.2px}
+.message .markdown li{margin:6px 0}
+.message .markdown li>p{margin:5px 0}
+.message .table-scroll{margin:20px 0;border-radius:10px;background:var(--ui-surface)}
+.message .markdown table{font-size:13px;line-height:1.8}
+.message .markdown th,.message .markdown td{padding:12px 15px;vertical-align:top}
+.message .markdown tbody tr:nth-child(even){background:var(--ui-panel)}
+.message .markdown blockquote{border-left-width:2px;border-radius:0 8px 8px 0;padding:5px 16px}
+.message .markdown pre{max-height:420px;tab-size:2}
+.message .status-text{padding:10px 0;margin:0 0 8px}
+.message .tool-trace{margin:20px 0 0;background:var(--ui-surface);border-radius:9px}
+.message .tool-trace>summary{min-height:42px;padding:10px 13px;font-size:11px;list-style:none}
+.message .tool-trace>summary::-webkit-details-marker{display:none}
+.message .tool-trace>summary svg{width:15px;height:15px}
+.message .tool-trace[open]>summary{background:var(--ui-panel)}
+.message .tool-items{padding:0 14px 11px}
+.message .tool-item{padding:10px 0 8px;margin:0;line-height:1.6}
+.message .tool-item strong{font-size:12px}
+.message .tool-item small{font-size:10px;margin:4px 0 0}
+.trace-caption{font-size:10px;color:var(--ui-muted);margin:3px 0 0}
+.message .message-actions{gap:6px;margin-top:14px}
+.message-actions .action{min-height:34px;padding:7px 9px;font-size:11px}
+.message-actions .action[aria-expanded=true]{background:var(--ui-primary-soft);color:var(--ui-accent)}
+.message .message-error{line-height:1.9;padding:12px 14px;overflow-wrap:anywhere}
+.details-content{padding:20px;scrollbar-gutter:stable;overscroll-behavior:contain;overflow-wrap:anywhere}
+.detail-context{padding-bottom:18px;margin-bottom:20px;border-bottom:1px solid var(--ui-border)}
+.detail-context-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--ui-muted);font-size:11px}
+.detail-question{font-size:14px;font-weight:600;color:var(--ui-ink);line-height:1.8;margin:13px 0 8px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.detail-context .detail-muted{margin:0;font-size:11px}
+.details-content .detail-section{margin-bottom:20px;padding-bottom:18px}
+.details-content .detail-section h3{font-size:13px;letter-spacing:.1px;margin-bottom:8px}
+.details-content .detail-muted{font-size:11px;line-height:1.85}
+.response-attention>.detail-muted,.response-checks>.detail-muted{margin:0 0 12px}
+.response-notices{display:grid;gap:8px}
+.response-notices .detail-disclaimer{margin:0;padding:10px 12px;border:1px solid var(--ui-border);border-left:3px solid var(--ui-icon);background:var(--ui-surface);border-radius:6px;font-size:11px}
+.reported-notice{width:100%;padding:10px 12px;border:1px solid var(--ui-warning-border);border-radius:7px;background:var(--ui-warning-bg);color:var(--ui-warning-text);text-align:left;line-height:1.8;overflow-wrap:anywhere}
+.reported-notice strong{display:block;font-size:12px;font-weight:600}
+.reported-notice span{display:block;font-size:11px;margin-top:2px}
+.reported-notice:hover{border-color:var(--ui-warning)}
+.detail-missing{margin-top:12px}
+.detail-missing strong{display:block;font-size:11px;color:var(--ui-text);font-weight:600}
+.detail-missing ul{padding-left:17px;margin:6px 0 0}
+.detail-missing li{margin:4px 0}
+.verification-report{display:grid;gap:8px;min-width:0}
+.response-checks .verification-check{margin:0;border:1px solid var(--ui-border);border-radius:8px;background:var(--ui-surface);min-width:0}
+.verification-check>summary{display:flex;align-items:flex-start;flex-direction:column;gap:5px;padding:12px 28px 12px 12px;position:relative;list-style:none;min-height:62px}
+.verification-check>summary::-webkit-details-marker{display:none}
+.verification-check>summary::after{content:'＋';position:absolute;right:11px;top:13px;color:var(--ui-muted);font-size:13px}
+.verification-check[open]>summary::after{content:'−'}
+.verification-check[open]>summary{border-bottom:1px solid var(--ui-subtle-border)}
+.check-name{font-size:12px;font-weight:500;color:var(--ui-text)}
+.check-state{font-size:10px;color:var(--ui-muted);line-height:1.6}
+.check-state.is-flagged{color:var(--ui-warning-text)}
+.check-body{padding:11px 12px;min-width:0}
+.check-fields{margin:0;font-size:11px}
+.check-field{padding:7px 0;border-bottom:1px solid var(--ui-subtle-border)}
+.check-field:first-child{padding-top:0}
+.check-field:last-child{border-bottom:0;padding-bottom:0}
+.check-field dt{color:var(--ui-muted);margin-bottom:3px}
+.check-field dd{margin:0;color:var(--ui-text);overflow-wrap:anywhere}
+.check-field .check-fields{padding-left:9px;border-left:2px solid var(--ui-border)}
+.check-values{margin:3px 0;padding-left:18px}
+.check-values>li{padding:4px 0}
+.check-value{white-space:pre-wrap;overflow-wrap:anywhere;font-size:11px}
+.check-nested-value{font:11px/1.8 Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;margin:0;max-height:260px;overflow:auto}
+.check-body .check-raw{margin:12px 0 0;border-top:1px solid var(--ui-border);padding-top:10px}
+.check-raw>summary{font-size:10px;min-height:28px}
+.detail-technical{border:1px solid var(--ui-border);border-radius:9px;background:var(--ui-surface);margin-bottom:20px}
+.detail-technical>summary{padding:14px;cursor:pointer;font-size:12px;color:var(--ui-text)}
+.detail-technical>summary small{display:block;font-size:10px;font-weight:400;color:var(--ui-muted);margin:4px 0 0}
+.detail-technical-body{padding:4px 14px 14px;min-width:0}
+.detail-technical .detail-stat{font-size:23px;font-variant-numeric:tabular-nums}
+.detail-technical .detail-label{font-size:11px;flex-wrap:wrap}
+.detail-tool>summary,.detail-raw>summary{cursor:pointer;line-height:1.8;min-height:32px;overflow-wrap:anywhere}
+.detail-tool{border-bottom:1px solid var(--ui-subtle-border);padding-bottom:4px}
+.detail-value{font:11px/1.8 Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;margin:10px 0 0;border:1px solid var(--ui-border)}
+@media(max-width:767px){
+  .messages{padding:24px 20px 12px}.message{margin-bottom:26px}
+  .message .markdown{font-size:14px;line-height:1.9}
+  .message .markdown h1{font-size:21px}.message .markdown h2{font-size:18px}
+  .message .markdown h3,.message .markdown h4{font-size:16px}
+  .message .markdown table{font-size:12px}.message .markdown th,.message .markdown td{padding:10px 12px}
+  .message-actions .action{min-height:40px;padding:8px}
+  .assistant-label{gap:7px}.assistant-label .assistant-reference{display:none}
+  .details-content{padding:18px}.reported-notice{min-height:48px}
+}

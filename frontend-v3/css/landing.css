@@ -1,0 +1,293 @@
+/* Standalone introduction page; deliberately isolated from workspace styles. */
+:root {
+  --landing-ink: var(--ui-ink);
+  --landing-accent: var(--ui-accent);
+  --landing-muted: var(--ui-muted);
+  --landing-line: var(--ui-border);
+  --landing-surface: var(--ui-surface-soft);
+  font-family: var(--ui-font);
+  color: var(--landing-ink);
+  background: var(--ui-page);
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; position: relative; isolation: isolate; }
+a { color: inherit; text-decoration: none; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+a:focus-visible, button:focus-visible { outline: 3px solid #5378d6; outline-offset: 6px; }
+svg { flex-shrink: 0; }
+.landing-skip { position: fixed; left: 24px; top: -80px; padding: 12px 18px; background: #fff; z-index: 2; }
+.landing-skip:focus { top: 12px; }
+.landing-page { position: relative; z-index: 1; min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; }
+.landing-header, .landing-footer { width: min(100%, 1440px); margin: 0 auto; padding-left: 64px; padding-right: 64px; }
+.landing-header { height: 104px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.landing-brand { display: inline-flex; align-items: center; gap: 11px; font-size: 20px; font-weight: 650; letter-spacing: -.65px; }
+.landing-brand img { display: block; }
+.landing-brand small { display: block; margin-top: 4px; color: var(--landing-muted); font-size: 10px; font-weight: 400; letter-spacing: 1.4px; }
+.landing-nav { display: flex; align-items: center; gap: 30px; font-size: 13px; }
+.landing-classic { padding: 12px 0; color: var(--landing-muted); }
+.landing-classic:hover { color: var(--landing-accent); text-decoration: underline; text-underline-offset: 5px; }
+
+.landing-main { flex: 1; display: grid; align-items: center; padding: 54px 32px 50px; }
+.landing-hero { width: min(100%, 900px); margin: 0 auto; text-align: center; }
+.landing-intro { margin: 0 0 23px; font-size: 13px; color: var(--landing-accent); letter-spacing: 1.5px; }
+.landing-hero h1 { font-size: clamp(40px, 4.1vw, 60px); font-weight: 600; letter-spacing: -2px; line-height: 1.38; margin: 0; }
+.landing-description { margin: 24px 0 35px; font-size: 14px; line-height: 1.95; color: var(--landing-muted); }
+.landing-mobile-break { display: none; }
+.landing-entry-surface { display: flex; flex-direction: column; justify-content: space-between; min-height: 162px; max-width: 790px; margin: 0 auto; padding: 24px 23px 18px; border: 1px solid var(--landing-line); border-radius: 22px; background: var(--landing-surface); text-align: left; box-shadow: 0 4px 18px #202a3d04; transition: border-color .18s, box-shadow .18s; }
+.landing-entry:hover .landing-entry-surface, .landing-entry:focus-visible .landing-entry-surface { border-color: #a3b7e6; box-shadow: 0 6px 24px #202a3d0a; }
+.landing-placeholder { font-size: 18px; color: var(--landing-muted); letter-spacing: .2px; }
+.entry-tabs { display: flex; gap: 8px; margin: -5px 0 18px; }
+.entry-tabs button { flex: 1; border: 1px solid transparent; padding: 9px 12px; background: transparent; color: var(--ui-muted); border-radius: 9px; font: inherit; font-size: 13px; cursor: pointer; }
+.entry-tabs button[aria-selected="true"] { color: var(--ui-accent); border-color: var(--ui-border); background: var(--ui-surface); box-shadow: 0 2px 6px #202a3d04; }
+#landing-question { width: 100%; resize: vertical; min-height: 74px; max-height: 180px; border: 0; padding: 2px 0 12px; background: transparent; color: var(--ui-text); font-family: inherit; line-height: 1.7; }
+#landing-question::placeholder { color: var(--ui-muted); opacity: 1; }
+#landing-question:focus-visible { outline: 2px solid var(--ui-focus); outline-offset: 4px; border-radius: 4px; }
+.landing-entry-arrow { border: 0; cursor: pointer; flex-shrink: 0; }
+.landing-entry-arrow:disabled { opacity: .5; cursor: default; }
+#landing-question-count { font-size: 10px; opacity: .85; margin-left: 8px; }
+.entry-patient-title { margin: 0 0 10px; color: var(--ui-ink); font-size: 18px; }
+.entry-patient-copy { color: var(--ui-muted); font-size: 13px; line-height: 1.9; margin: 0; }
+.entry-patient-link { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding: 11px 15px; background: var(--ui-primary); color: var(--ui-on-primary); border-radius: 9px; font-size: 13px; }
+.entry-error { margin: 12px 0 0; color: var(--ui-danger); font-size: 12px; line-height: 1.7; }
+.landing-entry-note a { color: var(--ui-accent); text-underline-offset: 4px; }
+.landing-entry-note a:hover { text-decoration: underline; }
+.landing-capability { border-radius: 10px; padding: 10px 4px; transition: background .15s; }
+.landing-capability:hover { background: var(--ui-hover); }
+.landing-entry-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.landing-entry-mode { display: inline-flex; align-items: center; gap: 7px; color: #566883; font-size: 12px; }
+.landing-entry-action { display: inline-flex; align-items: center; gap: 13px; font-size: 12px; color: var(--landing-accent); }
+.landing-entry-arrow { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--landing-accent); color: #fff; }
+.landing-entry-arrow svg { transition: transform .18s; }
+.landing-entry:hover .landing-entry-arrow svg { transform: translateY(-2px); }
+.landing-entry-note { font-size: 11px; color: var(--landing-muted); margin: 13px 0 0; }
+.landing-capabilities { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; max-width: 840px; margin: 42px auto 0; text-align: left; }
+.landing-capability { display: flex; gap: 12px; justify-content: center; }
+.landing-capability > svg { margin-top: 2px; color: #607aac; }
+.landing-capability h2 { margin: 0; font-size: 13px; font-weight: 500; line-height: 1.7; }
+.landing-capability p { margin: 6px 0 0; font-size: 11px; line-height: 1.7; color: var(--landing-muted); }
+.landing-availability { margin: 26px 0 0; color: var(--landing-muted); font-size: 11px; line-height: 1.8; }
+.landing-footer { min-height: 80px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; color: var(--landing-muted); font-size: 11px; }
+.landing-footer-label { white-space: nowrap; }
+.landing-footer p { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin: 0; line-height: 1.8; }
+.landing-footer strong { font-weight: 500; color: #4c5f7b; }
+.landing-footer-divider { width: 1px; height: 12px; background: #d4ddea; }
+.landing-footer-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 20px; }
+.landing-motion-toggle { padding: 7px 9px; border: 1px solid #dfe6f2; border-radius: 6px; background: #ffffffb3; color: var(--landing-muted); font: inherit; cursor: pointer; }
+.landing-motion-toggle:hover { color: var(--landing-accent); border-color: #a3b7e6; }
+.landing-sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+/* Two bounded, non-interactive gradient layers; no canvas or JS render loop. */
+.landing-atmosphere { position: absolute; z-index: 0; inset: 0; overflow: hidden; pointer-events: none; opacity: .85; transition: opacity .18s ease; }
+.landing-aurora { position: absolute; display: block; width: min(1000px, 90vw); height: 440px; top: 90px; border-radius: 50%; }
+.aurora-blue { left: calc(50% - 690px); background: radial-gradient(ellipse, #99baff50 0%, #b8d4ff26 38%, #cfe2ff0d 55%, transparent 72%); transform: translate3d(0, 0, 0) rotate(-18deg); }
+.aurora-violet { right: calc(50% - 660px); top: 125px; background: radial-gradient(ellipse, #b6a1f83a 0%, #c5b6fc20 38%, #d9d1ff0a 55%, transparent 72%); transform: translate3d(0, 0, 0) rotate(14deg); }
+.effects-ready .aurora-blue { animation: landing-aurora-blue 18s ease-in-out infinite alternate; }
+.effects-ready .aurora-violet { animation: landing-aurora-violet 22s ease-in-out infinite alternate; }
+@keyframes landing-aurora-blue { to { transform: translate3d(75px, 32px, 0) rotate(-9deg) scale(1.06); } }
+@keyframes landing-aurora-violet { to { transform: translate3d(-65px, -25px, 0) rotate(5deg) scale(1.07); } }
+
+/* A masked 1.5px highlight; text and the solid input surface are untouched. */
+@property --landing-border-angle { syntax: "<angle>"; inherits: false; initial-value: 25deg; }
+.landing-entry { position: relative; display: block; max-width: 790px; margin: 0 auto; border-radius: 22px; perspective: 1100px; text-align: left; }
+.landing-entry-surface { position: relative; isolation: isolate; border-radius: inherit; }
+@supports ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
+  .landing-entry-surface::before { content: ""; position: absolute; inset: -1px; padding: 1.5px; border-radius: inherit; pointer-events: none; background: conic-gradient(from var(--landing-border-angle, 25deg), transparent 0turn .68turn, #8eaafa66 .75turn, #6487e8 .82turn, #a696ea .9turn, transparent .98turn); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: .4; transition: opacity .2s ease; }
+  .effects-ready.sheen-supported .landing-entry-surface::before { animation: landing-border-orbit 7s linear infinite; animation-play-state: paused; }
+  .effects-ready.sheen-supported .landing-entry:hover .landing-entry-surface::before, .effects-ready.sheen-supported .landing-entry:focus-visible .landing-entry-surface::before { animation-play-state: running; opacity: 1; }
+}
+@keyframes landing-border-orbit { to { --landing-border-angle: 385deg; } }
+
+/* Departure is short, cancellable and never depends on animationend. */
+.landing-main, .landing-header, .landing-footer { transition: opacity .18s ease, transform .18s ease; }
+.landing-leaving .landing-main { opacity: .35; transform: translateY(-6px); }
+.landing-leaving .landing-header, .landing-leaving .landing-footer { opacity: .45; }
+.landing-leaving .landing-atmosphere { opacity: .15; }
+.landing-leaving a { cursor: progress; }
+.effects-paused .landing-aurora, .effects-paused .landing-entry-surface::before { animation-play-state: paused !important; }
+.effects-paused .landing-hero { animation: none; }
+.effects-paused .landing-entry:hover .landing-entry-arrow svg { transform: none; }
+.effects-paused a, .effects-paused .landing-entry-surface::before, .effects-paused .landing-entry-arrow svg { transition: none; }
+@keyframes landing-arrive { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+@media (min-width: 1600px) { .landing-main { padding-top: 70px; padding-bottom: 80px; } }
+@media (max-width: 900px) {
+  .landing-header, .landing-footer { padding-left: 32px; padding-right: 32px; }
+  .landing-capabilities { gap: 18px; }
+  .landing-capability { gap: 8px; }
+  .landing-footer { justify-content: center; text-align: center; padding-top: 20px; padding-bottom: 22px; }
+}
+@media (max-width: 600px) {
+  .landing-header { height: 82px; padding: 0 22px; gap: 14px; }
+  .landing-brand { font-size: 17px; gap: 8px; }
+  .landing-brand img { width: 30px; height: 30px; }
+  .landing-brand small { font-size: 9px; letter-spacing: .8px; }
+  .landing-nav { gap: 14px; font-size: 11px; }
+  .landing-main { padding: 39px 22px 34px; }
+  .landing-intro { font-size: 11px; letter-spacing: .8px; margin-bottom: 20px; }
+  .landing-hero h1 { font-size: clamp(27px, 7.8vw, 43px); line-height: 1.5; letter-spacing: -.9px; }
+  .landing-description { font-size: 13px; line-height: 1.95; margin: 21px 0 29px; }
+  .landing-mobile-break { display: initial; }
+  .landing-entry { border-radius: 18px; }
+  .landing-entry-surface { min-height: 158px; padding: 21px 17px 15px; }
+  .landing-placeholder { font-size: 16px; }
+  .landing-entry-mode { font-size: 10px; gap: 5px; }
+  .landing-entry-action { gap: 8px; font-size: 10px; }
+  .landing-entry-arrow { width: 35px; height: 35px; }
+  .landing-entry-note { font-size: 10px; margin-top: 12px; }
+  .landing-capabilities { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 15px; margin-top: 32px; }
+  .landing-capability { justify-content: flex-start; gap: 10px; padding-left: 7px; }
+  .landing-capability h2 { font-size: 12px; }
+  .landing-capability p { font-size: 11px; margin-top: 4px; }
+  .landing-availability { font-size: 10px; margin-top: 23px; }
+  .landing-footer { min-height: auto; padding: 18px 22px 24px; gap: 9px; font-size: 10px; }
+  .landing-footer p { justify-content: center; gap: 7px; }
+  .landing-footer-meta { justify-content: center; gap: 8px 14px; }
+  .landing-atmosphere { opacity: .55; }
+  .landing-aurora { width: 110vw; height: 310px; top: 100px; }
+  .aurora-blue { left: -38%; }
+  .aurora-violet { right: -38%; top: 150px; }
+  .effects-ready .aurora-blue { animation-duration: 26s; }
+  .effects-ready .aurora-violet { animation-duration: 30s; }
+  .effects-ready.sheen-supported .landing-entry:hover .landing-entry-surface::before, .effects-ready.sheen-supported .landing-entry:focus-visible .landing-entry-surface::before { opacity: .65; }
+}
+@media (max-width: 359px) { .landing-header { padding: 0 16px; }.landing-nav { gap: 9px; }.landing-main { padding-left: 16px; padding-right: 16px; }.landing-capability { padding-left: 0; gap: 7px; } }
+@media (prefers-reduced-motion: reduce) {
+  .landing-hero, .effects-ready .landing-aurora, .effects-ready.sheen-supported .landing-entry-surface::before { animation: none; }
+  a, .landing-entry-surface::before, .landing-entry-arrow svg, .landing-main, .landing-header, .landing-footer, .landing-atmosphere { transition: none; }
+  .landing-entry:hover .landing-entry-arrow svg, .landing-leaving .landing-main { transform: none; }
+  .landing-leaving .landing-main, .landing-leaving .landing-header, .landing-leaving .landing-footer { opacity: 1; }
+  .landing-atmosphere { opacity: .4; }
+}
+
+/* Shared palette; A is the default until explicitly selected in this tab. */
+body { --landing-bg: var(--ui-page); --landing-control: var(--ui-surface); --landing-icon: var(--ui-icon); --landing-entry-text: var(--ui-muted); --landing-hover-line: #8fa9ed; --landing-shadow: #3b58a619; --scene-x: 0px; --scene-y: 0px; color: var(--landing-ink); background: var(--landing-bg); min-height: 100svh; }
+:root[data-theme="b"] body { --landing-hover-line: #8aaaff; --landing-shadow: #03071488; }
+button { font: inherit; color: inherit; touch-action: manipulation; }
+.landing-skip { background: var(--landing-bg); z-index: 5; }
+.landing-footer strong { color: var(--landing-ink); }
+.landing-footer-divider { background: var(--landing-line); }
+.landing-motion-toggle { background: var(--landing-control); border-color: var(--landing-line); }
+.landing-capability > svg { color: var(--landing-icon); }
+.landing-entry-mode { color: var(--landing-entry-text); }
+.visual-switch { display: flex; gap: 3px; padding: 4px; border: 1px solid var(--landing-line); border-radius: 11px; background: var(--landing-control); }
+.visual-switch button { display: inline-flex; align-items: center; gap: 7px; padding: 9px 12px; border: 1px solid transparent; border-radius: 7px; background: transparent; color: var(--landing-muted); font-size: 12px; cursor: pointer; }
+.visual-switch button[aria-pressed="true"] { color: var(--landing-ink); background: var(--landing-bg); border-color: var(--landing-line); box-shadow: 0 2px 6px var(--landing-shadow); }
+.theme-dot { width: 10px; height: 10px; border-radius: 50%; }
+.theme-dot-light { background: #eef3ff; border: 1px solid #8d9fca; }
+.theme-dot-dark { background: #182646; border: 1px solid #8295c7; }
+
+/* The hit box is static. Only its child tilts, avoiding hover/click feedback loops. */
+.landing-entry-surface { --tilt-x: 0deg; --tilt-y: 0deg; min-height: 174px; background-image: linear-gradient(120deg, #ffffff45, transparent 55%); box-shadow: 0 20px 55px var(--landing-shadow), inset 0 1px 0 #ffffff75; transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y)); transition: transform .25s ease-out, border-color .2s, box-shadow .2s; }
+.landing-entry:hover .landing-entry-surface, .landing-entry:focus-visible .landing-entry-surface { border-color: var(--landing-hover-line); box-shadow: 0 24px 64px var(--landing-shadow), 0 0 26px #6c91ee1b, inset 0 1px 0 #ffffff75; }
+.landing-entry-arrow { background: #4164d9; box-shadow: 0 4px 16px #4164d933; transition: box-shadow .2s; }
+.landing-entry:hover .landing-entry-arrow { box-shadow: 0 0 0 5px #6487e818, 0 5px 20px #4164d94a; }
+[data-theme="b"] .landing-entry-surface { background-image: linear-gradient(120deg, #7a9ffd0a, transparent 55%); box-shadow: 0 22px 70px #0005, 0 0 55px #4d6cec16, inset 0 1px 0 #c1d5ff14; }
+[data-theme="b"] .landing-entry:hover .landing-entry-surface, [data-theme="b"] .landing-entry:focus-visible .landing-entry-surface { box-shadow: 0 22px 70px #0006, 0 0 45px #668aff28, inset 0 1px 0 #c1d5ff25; }
+[data-theme="b"] .landing-hero h1 { text-shadow: 0 0 60px #729af526; }
+[data-theme="b"] .landing-brand img { box-shadow: 0 0 24px #426bf935; border-radius: 9px; }
+[data-theme="b"] a:focus-visible, [data-theme="b"] button:focus-visible { outline-color: #a5c2ff; }
+
+/* A: bright light ribbons; B: independent orbital trails and a star field. */
+.landing-atmosphere { opacity: 1; }
+.landing-scene { position: absolute; inset: -24px; transform: translate3d(var(--scene-x), var(--scene-y), 0); transition: transform .45s ease-out; }
+.aurora-blue { background: radial-gradient(ellipse, #86b5ff65, #bbd6ff36 38%, transparent 72%); }
+.aurora-violet { background: radial-gradient(ellipse, #b5a0f852, #c5b6fc28 38%, transparent 72%); }
+.scene-ribbons, .scene-orbits { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ribbon-halo { stroke-width: 30px; opacity: .11; }
+.ribbon-core { stroke-width: 1px; opacity: .3; }
+.ribbon-signal { stroke-width: 2px; stroke-dasharray: 200 1800; stroke-dashoffset: 100; opacity: .65; }
+.effects-ready .ribbon-signal { animation: ribbon-travel 14s linear infinite; }
+.effects-ready .ribbon-signal-second { animation-duration: 19s; animation-direction: reverse; }
+@keyframes ribbon-travel { to { stroke-dashoffset: -1900; } }
+.scene-grid { position: absolute; inset: 64% -25% -40%; background-image: linear-gradient(#6b8be91c 1px, transparent 1px), linear-gradient(90deg, #6b8be91c 1px, transparent 1px); background-size: 70px 70px; transform: perspective(600px) rotateX(62deg); mask-image: linear-gradient(transparent, #0006 30%, transparent 85%); }
+.scene-pointer-glow { position: absolute; inset: 0; background: radial-gradient(300px circle at var(--pointer-x, 50%) var(--pointer-y, 40%), #739eff22, transparent 75%); opacity: 0; transition: opacity .4s; }
+.pointer-active .scene-pointer-glow { opacity: 1; }
+.scene-stars, .scene-orbits { display: none; }
+[data-theme="b"] .scene-ribbons { display: none; }
+[data-theme="b"] .scene-stars, [data-theme="b"] .scene-orbits { display: block; }
+[data-theme="b"] .aurora-blue { background: radial-gradient(ellipse, #244eab75, #18315e2a 45%, transparent 72%); }
+[data-theme="b"] .aurora-violet { background: radial-gradient(ellipse, #51388755, #27214a26 45%, transparent 72%); }
+.scene-stars { position: absolute; inset: 0; opacity: .6; background-image: radial-gradient(1.3px 1.3px at 17% 23%, #bdd1ff 75%, transparent), radial-gradient(1px 1px at 67% 17%, #aeb9e4 75%, transparent), radial-gradient(1.2px 1.2px at 82% 62%, #b5c9ff 75%, transparent), radial-gradient(1px 1px at 36% 76%, #7994c7 75%, transparent); background-size: 330px 280px, 420px 390px, 510px 410px, 380px 440px; mask-image: radial-gradient(ellipse, transparent 15%, #000 80%); }
+.effects-ready[data-theme="b"] .scene-stars { animation: star-drift 16s ease-in-out infinite alternate; }
+@keyframes star-drift { to { transform: translateY(-12px); opacity: .8; } }
+.orbit-track { stroke: #7a9cf626; stroke-width: 1; }
+.orbit-inner { stroke: #bb99f421; }
+.orbit-beam { stroke: #8eb3ff; stroke-width: 1.5; stroke-dasharray: 120 3150; opacity: .7; }
+.orbit-beam-second { stroke: #b3a0f8; stroke-dasharray: 85 2735; opacity: .55; }
+.effects-ready .orbit-beam { animation: orbit-travel 22s linear infinite; }
+.effects-ready .orbit-beam-second { animation-name: orbit-travel-inner; animation-duration: 28s; animation-direction: reverse; }
+@keyframes orbit-travel { to { stroke-dashoffset: -3270; } }
+@keyframes orbit-travel-inner { to { stroke-dashoffset: -2820; } }
+[data-theme="b"] .scene-grid { background-image: linear-gradient(#6588ed2a 1px, transparent 1px), linear-gradient(90deg, #6588ed2a 1px, transparent 1px); }
+[data-theme="b"] .scene-pointer-glow { background: radial-gradient(330px circle at var(--pointer-x, 50%) var(--pointer-y, 40%), #5473e52b, transparent 75%); }
+
+/* Local vector sketches stay in perimeter lanes, never on a full-page orbit. */
+.molecular-field { --molecule-blue: #658cd1; --molecule-violet: #9c80ce; position: absolute; inset: 0; pointer-events: none; }
+.molecular-definitions { position: absolute; }
+.molecular-motif { position: absolute; display: block; opacity: .54; }
+.molecular-float { display: block; width: 100%; height: auto; overflow: visible; fill: none; stroke-linecap: round; stroke-linejoin: round; transform: rotate(var(--motif-angle)); filter: drop-shadow(0 0 7px #7699e221); }
+.motif-dna-left { width: clamp(115px, 10vw, 175px); left: clamp(14px, 4.3vw, 110px); top: 21%; --motif-angle: -18deg; --motif-turn: -10deg; --motif-x: 14px; --motif-y: 22px; --motif-duration: 32s; --motif-delay: -9s; }
+.motif-rings { width: clamp(155px, 14vw, 240px); right: clamp(16px, 2.4vw, 80px); top: 19%; --motif-angle: 14deg; --motif-turn: 7deg; --motif-x: -12px; --motif-y: 19px; --motif-duration: 38s; --motif-delay: -22s; }
+.motif-chain { width: clamp(155px, 14vw, 245px); left: clamp(16px, 3.5vw, 100px); bottom: 15%; --motif-angle: -12deg; --motif-turn: -4deg; --motif-x: 12px; --motif-y: -18px; --motif-duration: 35s; --motif-delay: -17s; opacity: .4; }
+.motif-dna-right { width: clamp(100px, 8vw, 150px); right: clamp(28px, 5.5vw, 135px); bottom: 12%; --motif-angle: 24deg; --motif-turn: 15deg; --motif-x: -14px; --motif-y: -20px; --motif-duration: 40s; --motif-delay: -4s; opacity: .4; }
+.dna-backbone { stroke: url(#helix-strand); stroke-width: 2.4; }
+.dna-backbone-back { opacity: .65; }
+.dna-rungs { stroke: var(--molecule-blue); stroke-width: 1.35; opacity: .65; }
+.dna-rung-accent, .molecule-bond-accent { stroke: var(--molecule-violet); }
+.molecule-bonds { stroke: var(--molecule-blue); stroke-width: 1.6; }
+.molecule-atoms { fill: var(--molecule-violet); font: 13px ui-monospace, "Cascadia Code", Consolas, monospace; text-anchor: middle; }
+.molecule-nodes { fill: var(--molecule-blue); }
+.molecule-nodes-accent { fill: var(--molecule-violet); }
+.molecule-node-halo { fill: var(--molecule-blue); opacity: .12; }
+.effects-ready .molecular-float { animation: molecular-drift var(--motif-duration) ease-in-out var(--motif-delay) infinite alternate; }
+@keyframes molecular-drift { from { transform: translate3d(0, 0, 0) rotate(var(--motif-angle)); } to { transform: translate3d(var(--motif-x), var(--motif-y), 0) rotate(var(--motif-turn)); } }
+[data-theme="b"] .molecular-field { --molecule-blue: #8fb9ef; --molecule-violet: #b5a0ee; }
+[data-theme="b"] .molecular-float { filter: drop-shadow(0 0 9px #6e9eec40); }
+[data-theme="b"] .molecular-motif { opacity: .58; }
+[data-theme="b"] .motif-chain, [data-theme="b"] .motif-dna-right { opacity: .42; }
+@media (max-width: 1399px) {
+  .motif-dna-left { width: 108px; left: -37px; }
+  .motif-rings { width: 150px; right: -55px; }
+  .motif-chain { width: 140px; left: -58px; }
+  .motif-dna-right { width: 94px; right: -31px; }
+  .molecular-motif, [data-theme="b"] .molecular-motif { opacity: .3; }
+}
+@media (max-width: 600px) {
+  .motif-dna-left { width: 76px; left: -40px; top: 18%; --motif-x: 6px; --motif-y: 10px; --motif-duration: 42s; }
+  .motif-rings { width: 100px; right: -44px; top: 11%; --motif-x: -5px; --motif-y: 12px; --motif-duration: 46s; }
+  .motif-chain, .motif-dna-right { display: none; }
+  .molecular-motif, [data-theme="b"] .molecular-motif { opacity: .28; }
+  .molecular-float, [data-theme="b"] .molecular-float { filter: none; }
+}
+
+/* One staggered arrival; no replay when switching visual styles. */
+.effects-ready .landing-intro, .effects-ready #landing-title, .effects-ready .landing-description, .effects-ready .landing-entry, .effects-ready .landing-capabilities { animation: landing-reveal .6s cubic-bezier(.2,.7,.3,1) both; }
+.effects-ready #landing-title { animation-delay: .06s; }
+.effects-ready .landing-description { animation-delay: .13s; }
+.effects-ready .landing-entry { animation-delay: .2s; }
+.effects-ready .landing-capabilities { animation-delay: .28s; }
+@keyframes landing-reveal { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.effects-paused .landing-atmosphere *, .effects-paused .landing-entry-surface::before { animation-play-state: paused !important; }
+.effects-paused .landing-hero > * { animation: none !important; }
+.effects-paused .landing-entry-surface, .effects-paused .landing-scene { transform: none; transition: none; }
+.effects-paused .scene-pointer-glow { opacity: 0; }
+@media (max-width: 600px) {
+  .visual-switch { padding: 3px; border-radius: 9px; }
+  .visual-switch button { padding: 8px 9px; font-size: 10px; gap: 5px; }
+  .theme-dot { width: 8px; height: 8px; }
+  .landing-entry-surface { min-height: 158px; }
+  .landing-atmosphere { opacity: .7; }
+  .ribbon-halo { stroke-width: 18px; opacity: .08; }
+  .scene-orbits { opacity: .4; }
+  .scene-grid { opacity: .5; }
+  .scene-pointer-glow { display: none; }
+}
+@media (max-width: 359px) { .visual-switch button { padding: 8px 6px; } }
+@media (hover: none), (pointer: coarse) { .landing-entry-surface { transform: none; } .scene-pointer-glow { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .effects-ready .landing-hero > *, .effects-ready .landing-atmosphere *, .effects-ready.sheen-supported .landing-entry-surface::before { animation: none !important; }
+  .landing-entry-surface, .landing-entry-surface::before, .landing-scene, .landing-entry-arrow { transition: none; }
+  .landing-entry-surface, .landing-scene { transform: none; }
+  .scene-pointer-glow { display: none; }
+}

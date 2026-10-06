@@ -17,7 +17,7 @@ from collections.abc import AsyncGenerator
 from typing import Any, Optional
 
 from langchain_anthropic import ChatAnthropic
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from langgraph.graph import END, StateGraph
 from langgraph.prebuilt import ToolNode
 
@@ -25,6 +25,7 @@ from app.agent.state import AgentState
 from app.config import settings
 from app.database import create_conversation, load_messages, save_messages, update_conversation_title
 from app.observability import record_request
+from app.response_details import messages_for_model, with_response_details
 from app.tools.registry import get_all_tools
 
 logger = logging.getLogger(__name__)
@@ -220,7 +221,7 @@ def _build_graph():
 
     def call_model(state: AgentState) -> dict:
         """LLM reasoning node — decides to call tools or respond."""
-        messages = state["messages"]
+        messages = messages_for_model(state["messages"])
         response = llm_with_tools.invoke(messages)
         return {"messages": [response]}
 
@@ -303,12 +304,14 @@ async def run_agent(
         if not history:
             create_conversation(conversation_id)
 
-    # Truncate long conversation histories to prevent context overflow
+    # Limit model context, but preserve older messages and their saved details.
+    history_prefix = history[:-MAX_HISTORY_MESSAGES]
     if len(history) > MAX_HISTORY_MESSAGES:
         history = history[-MAX_HISTORY_MESSAGES:]
 
     # Build messages: system prompt + history + new message
     messages = [SystemMessage(content=SYSTEM_PROMPT)] + history + [HumanMessage(content=message)]
+    input_message_count = len(messages)
 
     # Run the graph with latency tracking
     initial_state = {
@@ -419,9 +422,9 @@ async def run_agent(
             token_usage["input"] += umeta.get("input_tokens", 0)
             token_usage["output"] += umeta.get("output_tokens", 0)
 
-    # Log tool calls from the conversation
+    # Detail metadata belongs to this turn, not tool calls from older answers.
     tool_calls = []
-    for msg in ai_messages:
+    for msg in ai_messages[input_message_count:]:
         if hasattr(msg, "tool_calls") and msg.tool_calls:
             for tc in msg.tool_calls:
                 tool_calls.append(
@@ -437,20 +440,6 @@ async def run_agent(
         tool_calls=tool_calls,
     )
 
-    # Persist conversation history to SQLite (exclude system prompt)
-    updated_history = [m for m in ai_messages if not isinstance(m, SystemMessage)]
-    try:
-        save_messages(conversation_id, updated_history)
-    except Exception:
-        logger.exception("Failed to save conversation history — response still returned")
-
-    # Auto-generate title from first user message
-    if is_new:
-        title = message[:80].strip()
-        if len(message) > 80:
-            title += "..."
-        update_conversation_title(conversation_id, title)
-
     # Build disclaimers — merge keyword-based + verification disclaimers
     disclaimers = []
     if any(
@@ -465,15 +454,7 @@ async def run_agent(
         if d not in disclaimers:
             disclaimers.append(d)
 
-    # Record observability metrics
-    record_request(
-        conversation_id=conversation_id,
-        latency_ms=latency_ms,
-        token_usage=token_usage,
-        tool_calls=tool_calls,
-    )
-
-    return {
+    response = {
         "response": final_message.content,
         "conversation_id": conversation_id,
         "tool_calls": tool_calls,
@@ -483,6 +464,31 @@ async def run_agent(
         "token_usage": token_usage,
         "latency_ms": round(latency_ms, 1),
     }
+    # Metadata is attached to this exact answer, never matched by list index on reload.
+    updated_history = history_prefix + [m for m in ai_messages if not isinstance(m, SystemMessage)]
+    if updated_history and isinstance(updated_history[-1], AIMessage):
+        updated_history[-1] = with_response_details(updated_history[-1], response)
+    try:
+        save_messages(conversation_id, updated_history)
+    except Exception:
+        logger.exception("Failed to save conversation history — response still returned")
+        disclaimers.append("本轮聊天记录和详情未能保存，重新打开会话后可能无法恢复。")
+
+    if is_new:
+        title = message[:80].strip()
+        if len(message) > 80:
+            title += "..."
+        update_conversation_title(conversation_id, title)
+
+    # Record observability metrics
+    record_request(
+        conversation_id=conversation_id,
+        latency_ms=latency_ms,
+        token_usage=token_usage,
+        tool_calls=tool_calls,
+    )
+
+    return response
 
 
 def _sse(event: str, data: dict) -> str:
@@ -516,6 +522,7 @@ async def run_agent_stream(
         if not history:
             create_conversation(conversation_id)
 
+    history_prefix = history[:-MAX_HISTORY_MESSAGES]
     if len(history) > MAX_HISTORY_MESSAGES:
         history = history[-MAX_HISTORY_MESSAGES:]
 
@@ -625,21 +632,6 @@ async def run_agent_stream(
         tool_outputs=tool_outputs,
     )
 
-    # Persist conversation
-    try:
-        # Build message list for saving: history + new user msg + assistant response
-        from langchain_core.messages import AIMessage
-        save_msgs = list(history) + [HumanMessage(content=message), AIMessage(content=full_text)]
-        save_messages(conversation_id, save_msgs)
-    except Exception:
-        logger.exception("Failed to save streamed conversation history")
-
-    if is_new:
-        title = message[:80].strip()
-        if len(message) > 80:
-            title += "..."
-        update_conversation_title(conversation_id, title)
-
     # Build disclaimers
     disclaimers = []
     if any(
@@ -654,6 +646,29 @@ async def run_agent_stream(
         if d not in disclaimers:
             disclaimers.append(d)
 
+    response = {
+        "response": full_text,
+        "conversation_id": conversation_id,
+        "tool_calls": tool_calls,
+        "confidence": verification_result["confidence"],
+        "disclaimers": disclaimers,
+        "verification": verification_result.get("verification", {}),
+        "latency_ms": round(latency_ms, 1),
+    }
+    try:
+        answer = with_response_details(AIMessage(content=full_text), response)
+        save_msgs = history_prefix + list(history) + [HumanMessage(content=message), answer]
+        save_messages(conversation_id, save_msgs)
+    except Exception:
+        logger.exception("Failed to save streamed conversation history")
+        disclaimers.append("本轮聊天记录和详情未能保存，重新打开会话后可能无法恢复。")
+
+    if is_new:
+        title = message[:80].strip()
+        if len(message) > 80:
+            title += "..."
+        update_conversation_title(conversation_id, title)
+
     record_request(
         conversation_id=conversation_id,
         latency_ms=latency_ms,
@@ -662,12 +677,4 @@ async def run_agent_stream(
     )
 
     # Final done event with metadata
-    yield _sse("done", {
-        "response": full_text,
-        "conversation_id": conversation_id,
-        "tool_calls": tool_calls,
-        "confidence": verification_result["confidence"],
-        "disclaimers": disclaimers,
-        "verification": verification_result.get("verification", {}),
-        "latency_ms": round(latency_ms, 1),
-    })
+    yield _sse("done", response)

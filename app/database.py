@@ -109,6 +109,22 @@ def update_conversation_title(conversation_id: str, title: str) -> None:
         )
 
 
+def rename_conversation(conversation_id: str, title: str) -> Optional[dict]:
+    """Rename an existing conversation atomically, without touching its messages."""
+    with get_connection() as conn:
+        cursor = conn.execute(
+            "UPDATE conversations SET title = ?, updated_at = ? WHERE id = ?",
+            (title, time.time(), conversation_id),
+        )
+        if cursor.rowcount == 0:
+            return None
+        row = conn.execute(
+            "SELECT id, title, updated_at FROM conversations WHERE id = ?",
+            (conversation_id,),
+        ).fetchone()
+        return dict(row)
+
+
 def list_conversations(limit: int = 50) -> list[dict]:
     """Return recent conversations ordered by most recently updated."""
     with get_connection() as conn:

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="与疗 Agent — 你的医疗信息助手。医疗信息辅助工作台，AI 辅助参考，不替代专业判断。">
+  <meta name="api-key" content="">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>与疗 Agent · 医疗信息工作台</title>
+  <link rel="icon" href="/assets/mark-landing.svg" type="image/svg+xml">
+  <script src="/js/theme.js?v=20261005-boot2"></script>
+  <link rel="stylesheet" href="/css/theme.css?v=20261005-boot2">
+  <link rel="stylesheet" href="/css/workspace.css?v=20261005-boot2">
+  <link rel="stylesheet" href="/css/workspace-shell.css?v=20261005-boot2">
+  <link rel="stylesheet" href="/css/patients.css?v=20261005-boot2">
+  <link rel="stylesheet" href="/css/response.css?v=20261005-boot2">
+  <script defer src="/vendor/markdown-it.min.js"></script>
+  <script defer src="/vendor/purify.min.js"></script>
+  <script type="module" src="/js/workspace-entry.js?v=20261005-boot2"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <div class="app-shell" id="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="工作台导航">
+      <a class="brand" href="/" data-navigation aria-label="返回项目首页" title="返回项目首页"><img src="/assets/mark-landing.svg" width="32" height="32" alt=""><span>与疗 Agent<small>你的医疗信息助手</small></span></a>
+      <button class="button sidebar-new" data-new-chat><span data-icon="plus"></span>新建会话<span class="key-hint">＋</span></button>
+      <nav class="main-nav" aria-label="主导航">
+        <span class="nav-section-label">工作空间</span>
+        <button class="nav-item active" id="home-button" data-view="assistant" aria-current="page"><span data-icon="chat"></span>医疗助手</button>
+        <button class="nav-item" id="patients-button" data-view="patients"><span data-icon="patient"></span>患者工作台</button>
+        <button class="nav-item" id="history-button" data-view="history"><span data-icon="history"></span>会话管理</button>
+        <button class="nav-item" id="capabilities-button" data-view="capabilities"><span data-icon="grid"></span>能力中心<span class="count" id="tool-count">14</span></button>
+      </nav>
+      <div class="history-heading"><span>最近会话</span><button class="icon-button" id="refresh-history" aria-label="刷新会话列表" title="刷新会话列表"><span data-icon="refresh"></span></button></div>
+      <label class="history-search"><span data-icon="search"></span><input id="history-search" placeholder="搜索最近会话" aria-label="搜索最近会话"></label>
+      <div class="history-list" id="history-list" aria-label="历史会话"><p class="sidebar-empty">正在加载会话…</p></div>
+      <button class="recent-all" data-view="history">查看会话管理<span data-icon="chevron"></span></button>
+      <div class="sidebar-bottom">
+        <button class="nav-item" id="help-button"><span data-icon="help"></span>使用说明</button>
+        <a class="nav-item" href="/classic/" data-navigation><span data-icon="panels"></span>返回经典版<span data-icon="arrow-up-right"></span></a>
+        <div class="workspace-label"><span class="workspace-avatar" data-icon="layers"></span><span>医疗信息工作台<small>开发验证环境 · 辅助参考</small></span></div>
+      </div>
+    </aside>
+    <button class="scrim" id="sidebar-scrim" aria-label="关闭导航" hidden></button>
+    <main class="main" id="main">
+      <header class="topbar">
+        <div class="topbar-left"><button class="icon-button mobile-menu" id="menu-button" aria-label="打开导航" aria-expanded="false" aria-controls="sidebar"><span data-icon="menu"></span></button><span class="breadcrumb">工作台<span>/</span><strong id="view-title">医疗助手</strong></span></div>
+        <div class="topbar-actions"><span class="connection" id="connection" role="status"><i></i><span>检测接口中</span></span><button class="button button-small" data-new-chat><span data-icon="plus"></span>新建会话</button></div>
+      </header>
+      <div id="notice" class="notice" role="alert" hidden></div>
+      <div id="main-content" class="workspace-content" tabindex="-1">
+      <section class="welcome" id="welcome" aria-labelledby="welcome-title">
+        <div class="hero-mark"><span data-icon="spark"></span></div>
+        <div class="eyebrow">你的医疗信息助手</div>
+        <h1 id="welcome-title">让信息有序，让工作从容。</h1>
+        <p class="welcome-copy">从患者记录到用药信息，用一个问题开始。<br class="mobile-break">查询、整理，获得有依据的辅助参考。</p>
+        <div id="home-composer-slot"></div>
+        <div class="suggestion-heading"><h2>从一个具体任务开始</h2><span>点击填入问题，编辑后发送</span></div>
+        <div class="suggestions" id="suggestions"></div>
+        <div class="home-footnote"><span data-icon="shield"></span><span>AI 辅助参考，需要医护人员核实。请勿将回答视为诊断或处方。</span></div>
+      </section>
+      <section class="chat-view" id="chat-view" aria-label="对话" hidden>
+        <div class="conversation-heading"><div><span class="eyebrow">当前会话</span><h1 id="conversation-title">新会话</h1></div><button class="button button-quiet button-small" id="latest-details" disabled><span data-icon="panel-right"></span>结果详情</button></div>
+        <div class="message-scroll" id="message-scroll"><div class="messages" id="messages"></div></div>
+        <div class="chat-composer-area"><div id="chat-composer-slot"></div><p class="chat-disclaimer">AI 辅助参考，不替代专业判断。回答可能包含错误，请核对原始记录。</p></div>
+      </section>
+      <section class="workspace-page" id="patients-view" aria-labelledby="patients-title" hidden></section>
+      <section class="workspace-page" id="history-view" aria-labelledby="history-title" hidden>
+        <header class="page-heading"><div><span class="eyebrow">会话与记录</span><h1 id="history-title" tabindex="-1">会话管理</h1><p>找到之前的讨论，接着完成你的工作。</p></div><button class="button button-quiet button-small" id="refresh-conversations"><span data-icon="refresh"></span>刷新列表</button></header>
+        <div class="page-toolbar">
+          <label class="workspace-search"><span data-icon="search"></span><input id="conversation-search" type="search" placeholder="搜索会话名称" aria-label="搜索会话名称"></label>
+          <label class="sort-control">排序<select id="conversation-sort"><option value="recent">最近更新</option><option value="oldest">较早更新</option><option value="title">名称顺序</option></select></label>
+        </div>
+        <div class="list-caption"><span id="conversation-count" role="status">正在读取会话…</span><span>与经典版共用会话数据</span></div>
+        <div id="conversation-list" class="conversation-list" aria-label="会话列表" aria-busy="false"></div>
+        <p class="page-footnote"><span data-icon="lock"></span>这里展示接口返回的会话。重命名不影响内容；删除会同时移除聊天记录。</p>
+      </section>
+      <section class="workspace-page" id="capabilities-view" aria-labelledby="capabilities-title" hidden>
+        <header class="page-heading"><div><span class="eyebrow">任务与能力</span><h1 id="capabilities-title" tabindex="-1">能力中心</h1><p>按任务找到合适的入口，补全信息后交给医疗助手。</p></div><span class="page-label">问题模板 · 手动发送</span></header>
+        <div class="capabilities-note"><span data-icon="shield"></span><p>以下为已注册工具，不代表数据或服务已就绪。选择能力只会填入问题模板，实际调用由 Agent 判断；带写入标记的操作可能修改业务记录。</p></div>
+        <div class="page-toolbar"><label class="workspace-search"><span data-icon="search"></span><input id="capability-search" type="search" placeholder="搜索能力、用途或工具名称" aria-label="搜索能力"></label></div>
+        <div id="capability-filters" class="filter-tabs" role="group" aria-label="能力分类"></div>
+        <div class="list-caption"><span id="capability-count" role="status"></span><button class="text-button" id="clear-capability-filters" hidden>清除筛选</button></div>
+        <p class="capability-busy" hidden>当前任务处理中，结束后可选择工具模板。</p>
+        <div id="capability-list" class="capability-grid" aria-label="可用能力"></div>
+      </section>
+      <form class="composer" id="composer" aria-busy="true">
+        <label class="sr-only" for="message-input">输入问题</label>
+        <textarea id="message-input" rows="4" maxlength="10000" aria-describedby="template-warning" placeholder="请输入患者姓名或 ID，以及需要查询的内容…" readonly disabled></textarea>
+        <p id="template-warning" class="template-warning" hidden></p>
+        <div class="composer-footer"><span class="composer-hint"><span data-icon="lock"></span><span>仅提供完成任务所需的信息</span></span><div class="composer-actions"><span id="character-count">0 / 10,000</span><button type="submit" class="send-button" id="send-button" aria-label="发送问题" disabled><span data-icon="arrow-up"></span></button></div></div>
+      </form>
+      </div>
+      <p class="sr-only" id="live-status" role="status" aria-live="polite"></p>
+    </main>
+    <aside class="details-panel" id="details-panel" aria-labelledby="details-title" hidden>
+      <div class="details-header"><div><span class="eyebrow">回答详情</span><h2 id="details-title">结果详情</h2></div><button class="icon-button" id="close-details" aria-label="关闭结果详情"><span data-icon="close"></span></button></div>
+      <div id="details-content" class="details-content"></div>
+    </aside>
+    <button class="scrim details-scrim" id="details-scrim" aria-label="关闭结果详情" hidden></button>
+  </div>
+  <dialog id="info-dialog" class="dialog" aria-labelledby="dialog-title"><div class="dialog-header"><h2 id="dialog-title"></h2><button class="icon-button" id="close-dialog" aria-label="关闭弹窗"><span data-icon="close"></span></button></div><div id="dialog-content"></div></dialog>
+  <dialog id="delete-dialog" class="dialog delete-dialog" aria-labelledby="delete-title"><h2 id="delete-title">删除这段会话？</h2><p>会话及其聊天记录将从服务器删除，新旧界面都会受影响。此操作无法撤销。</p><p class="dialog-error" id="delete-error" role="alert"></p><div class="dialog-actions"><button class="button button-quiet" id="cancel-delete">取消</button><button class="button button-danger" id="confirm-delete">确认删除</button></div></dialog>
+  <dialog id="rename-dialog" class="dialog rename-dialog" aria-labelledby="rename-title">
+    <form id="rename-form">
+      <h2 id="rename-title">重命名会话</h2>
+      <p id="rename-hint">为会话设置一个便于查找的名称，不会修改聊天内容。</p>
+      <label class="rename-label" for="rename-input">会话名称</label>
+      <input id="rename-input" class="rename-input" type="text" maxlength="100" required autocomplete="off" aria-describedby="rename-hint rename-error">
+      <div class="rename-caption"><span>最多 100 个字符</span><span id="rename-count">0 / 100</span></div>
+      <p class="dialog-error" id="rename-error" role="alert"></p>
+      <div class="dialog-actions"><button type="button" class="button button-quiet" id="cancel-rename">取消</button><button type="submit" class="button" id="save-rename">保存名称</button></div>
+    </form>
+  </dialog>
+</body>
+</html>

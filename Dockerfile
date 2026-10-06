@@ -16,6 +16,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app/ ./app/
 COPY frontend/ ./frontend/
 COPY frontend-v2/ ./frontend-v2/
+COPY frontend-v3/ ./frontend-v3/
 
 # Copy deployment configuration
 COPY deploy/nginx.conf /etc/nginx/nginx.conf
